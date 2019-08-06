@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zcx.blog.mapper.LinkMapper" >
+    <resultMap id="BaseResultMap" type="com.zcx.blog.entity.Link" >
+        <id column="link_id" property="linkId" jdbcType="INTEGER" />
+        <result column="link_url" property="linkUrl" jdbcType="VARCHAR" />
+        <result column="link_name" property="linkName" jdbcType="VARCHAR" />
+        <result column="link_image" property="linkImage" jdbcType="VARCHAR" />
+        <result column="link_description" property="linkDescription" jdbcType="VARCHAR" />
+        <result column="link_owner_nickname" property="linkOwnerNickname" jdbcType="VARCHAR" />
+        <result column="link_owner_contact" property="linkOwnerContact" jdbcType="VARCHAR" />
+        <result column="link_update_time" property="linkUpdateTime" jdbcType="TIMESTAMP" />
+        <result column="link_create_time" property="linkCreateTime" jdbcType="TIMESTAMP" />
+        <result column="link_order" property="linkOrder" jdbcType="INTEGER" />
+        <result column="link_status" property="linkStatus" jdbcType="INTEGER" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+    link_id, link_url, link_name, link_image, link_description, link_owner_nickname,
+    link_owner_contact, link_update_time, link_create_time, link_order, link_status
+  </sql>
+
+    <sql id="tb">link</sql>
+
+    <!--获取链接列表-->
+    <select id="listLink" resultType="com.zcx.blog.entity.Link">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM  <include refid="tb"/>
+        <where>
+            <if test="status!=null">
+                link_status=#{status}
+            </if>
+        </where>
+        ORDER BY link_status ASC,link_order DESC,link_id ASC
+    </select>
+
+</mapper>

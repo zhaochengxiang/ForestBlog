@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zcx.blog.mapper.MenuMapper" >
+    <resultMap id="BaseResultMap" type="com.zcx.blog.entity.Menu" >
+        <id column="menu_id" property="menuId" jdbcType="INTEGER" />
+        <result column="menu_name" property="menuName" jdbcType="VARCHAR" />
+        <result column="menu_url" property="menuUrl" jdbcType="VARCHAR" />
+        <result column="menu_level" property="menuLevel" jdbcType="INTEGER" />
+        <result column="menu_icon" property="menuIcon" jdbcType="VARCHAR" />
+        <result column="menu_order" property="menuOrder" jdbcType="INTEGER" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    menu_id, menu_name, menu_url, menu_level, menu_icon, menu_order
+  </sql>
+
+    <sql id="tb">menu</sql>
+
+    <!--获得菜单列表-->
+    <select id="listMenu"  resultType="com.zcx.blog.entity.Menu">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="tb"/>
+        ORDER BY menu_order DESC, menu_id ASC
+    </select>
+</mapper>

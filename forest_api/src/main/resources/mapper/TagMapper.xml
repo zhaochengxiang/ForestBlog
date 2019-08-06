@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zcx.blog.mapper.TagMapper" >
+    <resultMap id="BaseResultMap" type="com.zcx.blog.entity.Tag" >
+        <id column="tag_id" property="tagId" jdbcType="INTEGER" />
+        <result column="tag_name" property="tagName" jdbcType="VARCHAR" />
+        <result column="tag_description" property="tagDescription" jdbcType="VARCHAR" />
+    </resultMap>
+    <sql id="Base_Column_List" >
+    tag_id, tag_name, tag_description
+  </sql>
+
+    <sql id="tb">tag</sql>
+
+    <!--获得标签列表-->
+    <select id="listTag"  resultType="com.zcx.blog.entity.Tag">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM <include refid="tb"/>
+    </select>
+
+</mapper>

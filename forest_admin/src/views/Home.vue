@@ -54,6 +54,11 @@
 </template>
 <script>
   export default{
+    data(){
+      return {
+        currentUserName: ''
+      }
+    },
     methods: {
       handleCommand(command){
         if (command == 'logout') {
@@ -63,11 +68,6 @@
     },
     mounted: function () {
       
-    },
-    data(){
-      return {
-        currentUserName: ''
-      }
     }
   }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div>
-    <el-form class="login-container" label-position="right" label-width="80px" v-loading="loading">
-      <h3 class="login-title">系统登录</h3>
+    <el-form class="login_container" label-position="right" label-width="80px" v-loading="loading">
+      <h3 class="login_title">系统登录</h3>
       <el-form-item label="用户名">
         <el-input type="text" v-model="form.username" placeholder="账号"></el-input>
       </el-form-item>
@@ -17,51 +17,51 @@
 
 <script>
 export default {
-    data() {
-        return {
-            form: {
-                username: '',
-                password: '',
-            },
-            loading: false
-        }
-    },
-    methods: {
-      onSubmit() {
-        var _this = this
-        this.loading = true
-        this.$http.post("/user/login", {
-            username: this.form.username,
-            password: this.form.password
-        }).then(res => {
-            _this.loading = false;
-            if (res.data.code == 200) {
-                _this.$router.replace({path: '/home'})
-            } else {
-                _this.$alert('登录失败!', '失败!')
-            }
-        }).catch(err => {
-            console.error(err)
-        })
-      }
+  data() {
+    return {
+      form: {
+          username: '',
+          password: '',
+      },
+      loading: false
     }
+  },
+  methods: {
+    onSubmit() {
+      var _this = this
+      this.loading = true
+      this.$http.post("/user/login", {
+        username: this.form.username,
+        password: this.form.password
+      }).then(res => {
+        _this.loading = false;
+        if (res.data.code == 200) {
+            _this.$router.replace({path: '/home'})
+        } else {
+            _this.$alert('登录失败!', '失败!')
+        }
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+  }
 }
 </script>
 
 <style>
-.login-container {
-    border-radius: 15px;
-    margin: 180px auto;
-    width: 350px;
-    padding: 35px 35px 15px 35px;
-    background: #fff;
-    border: 1px solid #eaeaea;
-    box-shadow: 0 0 25px #cac6c6;
+.login_container {
+  border-radius: 15px;
+  margin: 180px auto;
+  width: 350px;
+  padding: 35px 35px 15px 35px;
+  background: #fff;
+  border: 1px solid #eaeaea;
+  box-shadow: 0 0 25px #cac6c6;
 }
 
-.login-title {
-    margin: 0px auto 40px auto;
-    text-align: center;
-    color: #505458;
+.login_title {
+  margin: 0px auto 40px auto;
+  text-align: center;
+  color: #505458;
 }
 </style>

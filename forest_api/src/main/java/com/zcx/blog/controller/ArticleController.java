@@ -27,8 +27,7 @@ public class ArticleController {
     @ResponseBody
     public String recentArticle() {
         List<Article> articleList = articleService.listRecentArticle(5);
-        Map map = ImmutableMap.of("data", articleList);
-        return Result.of(200, map);
+        return Result.of(200, articleList);
     }
 
     @RequestMapping(value="/get")
@@ -39,8 +38,7 @@ public class ArticleController {
         }
 
         Article article = articleService.getArticleByStatusAndId(status,id);
-        Map map = ImmutableMap.of("data", article);
-        return Result.of(200, map);
+        return Result.of(200, article);
     }
 
     @RequestMapping(value = "/search")
@@ -58,8 +56,7 @@ public class ArticleController {
         }
 
         PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
-        Map map = ImmutableMap.of("data", articlePageInfo);
-        return Result.of(200, map);
+        return Result.of(200, articlePageInfo);
     }
 
     @RequestMapping(value = "/insert")

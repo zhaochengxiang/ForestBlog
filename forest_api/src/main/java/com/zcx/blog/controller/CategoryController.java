@@ -46,7 +46,6 @@ public class CategoryController {
     @ResponseBody
     public String getAll() {
         List<Category> categories = categoryService.listCategory();
-        Map map = ImmutableMap.of("data", categories);
-        return Result.of(200,map);
+        return Result.of(200,categories);
     }
 }

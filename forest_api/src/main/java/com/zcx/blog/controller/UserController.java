@@ -19,10 +19,7 @@ public class UserController {
 
     @RequestMapping(value = "/login")
     @ResponseBody
-    public String login(@RequestBody HashMap<String,String> map) {
-
-        String username = map.get("username");
-        String password = map.get("password");
+    public String login(String username,String password) {
 
         User user = userService.getUserByNameOrEmail(username);
         if(user==null) {

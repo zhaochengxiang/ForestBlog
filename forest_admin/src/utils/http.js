@@ -2,13 +2,23 @@ import axios from 'axios'
 
 // create an axios instance
 const service = axios.create({
+  method: 'post',
   baseURL: process.env.baseURL, // api 的 base_url
   timeout: 5000, // request timeout
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }
 })
 
 // request interceptor
 service.interceptors.request.use(
   config => {
+    let ret = ''
+    for (let it in config.data) {
+      ret += encodeURIComponent(it) + '=' + encodeURIComponent(config.data[it]) + '&'
+    }
+    config.data = ret
+
     return config
   },
   error => {

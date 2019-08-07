@@ -2,14 +2,13 @@ package com.zcx.blog.mapper;
 
 import com.zcx.blog.entity.Article;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
 import java.util.List;
 
 @Mapper
-@Repository
-public interface ArticleMapper {
+public interface ArticleMapper{
 
     /**
      * 获得最新文章
@@ -18,6 +17,16 @@ public interface ArticleMapper {
      * @return 列表
      */
     List<Article> listArticleByLimit(Integer limit);
+
+    /**
+     * 根据id查询用户信息
+     *
+     * @param status 状态
+     * @param id 文章ID
+     * @return 文章
+     */
+    Article getArticleByStatusAndId(@Param(value = "status") Integer status, @Param(value = "id") Integer id);
+
 
     /**
      * 获得所有的文章

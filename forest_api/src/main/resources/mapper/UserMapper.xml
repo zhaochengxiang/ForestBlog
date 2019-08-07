@@ -41,7 +41,7 @@
     </update>
 
     <!--根据用户名或邮箱获得用户-->
-    <select id="getUserByNameOrEmail" parameterType="String" resultType="com.zcx.blog.entity.User">
+    <select id="getUserByNameOrEmail" parameterType="String" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

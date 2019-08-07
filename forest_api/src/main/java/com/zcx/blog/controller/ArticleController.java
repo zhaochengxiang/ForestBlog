@@ -4,6 +4,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.collect.ImmutableMap;
 import com.zcx.blog.entity.Article;
 import com.zcx.blog.entity.Result;
+import com.zcx.blog.enums.ArticleStatus;
 import com.zcx.blog.service.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,19 @@ public class ArticleController {
     @ResponseBody
     public String recentArticle() {
         List<Article> articleList = articleService.listRecentArticle(5);
-        Map map = ImmutableMap.of("articles", articleList);
+        Map map = ImmutableMap.of("data", articleList);
+        return Result.of(200, map);
+    }
+
+    @RequestMapping(value="/get")
+    @ResponseBody
+    public String get(Integer status, Integer id) {
+        if (status == null) {
+            status = ArticleStatus.PUBLISH.getValue();
+        }
+
+        Article article = articleService.getArticleByStatusAndId(status,id);
+        Map map = ImmutableMap.of("data", article);
         return Result.of(200, map);
     }
 
@@ -45,15 +58,8 @@ public class ArticleController {
         }
 
         PageInfo<Article> articlePageInfo = articleService.pageArticle(pageIndex, pageSize, criteria);
-        Map map = ImmutableMap.of("articlePageInfo", articlePageInfo);
+        Map map = ImmutableMap.of("data", articlePageInfo);
         return Result.of(200, map);
-    }
-
-    @RequestMapping(value = "/delete")
-    @ResponseBody
-    public String delete(Integer id) {
-        articleService.deleteArticle(id);
-        return Result.of(200);
     }
 
     @RequestMapping(value = "/insert")
@@ -67,6 +73,13 @@ public class ArticleController {
     @ResponseBody
     public String update(Article article) {
         articleService.updateArticle(article);
+        return Result.of(200);
+    }
+
+    @RequestMapping(value = "/delete")
+    @ResponseBody
+    public String delete(Integer id) {
+        articleService.deleteArticle(id);
         return Result.of(200);
     }
 }

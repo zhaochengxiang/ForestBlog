@@ -7,13 +7,13 @@ import com.zcx.blog.entity.Category;
 import com.zcx.blog.entity.Result;
 import com.zcx.blog.enums.ArticleStatus;
 import com.zcx.blog.service.ArticleService;
+import com.zcx.blog.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,6 +23,9 @@ public class ArticleController {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private SessionService sessionService;
 
     @RequestMapping(value = "/recent")
     @ResponseBody

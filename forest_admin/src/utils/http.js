@@ -13,6 +13,10 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
+    if (window.localStorage.getItem("token")) {
+      config.headers['Access-Token'] = window.localStorage.getItem("token");
+    } 
+
     let ret = ''
     for (let it in config.data) {
       ret += encodeURIComponent(it) + '=' + encodeURIComponent(config.data[it]) + '&'

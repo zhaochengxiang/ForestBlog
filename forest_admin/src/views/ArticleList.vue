@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="margin:20px 0">
     <el-table :data="tableData" style="width: 100%;">
       <el-table-column prop="articleTitle" label="标题">
       </el-table-column>

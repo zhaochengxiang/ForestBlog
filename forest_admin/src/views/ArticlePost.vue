@@ -5,10 +5,9 @@
         <el-input v-model="article.articleTitle"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <mavon-editor :subfield = "false" defaultOpen="preview" v-model="article.articleContent" class="editor" />
+        <mavon-editor :subfield = "false" :defaultOpen = "editDefaultOpen" v-model="article.articleContent" class="editor" />
       </el-form-item>
       <el-form-item label="分类" prop="category">
-        <el-row :gutter="10">
         <el-col :span="4">
           <el-select v-model="categoryPrimaryId" placeholder="一级分类">
             <el-option-group label="一级分类">
@@ -17,6 +16,7 @@
             </el-option-group>
           </el-select>
         </el-col>
+        <el-col :span="1">-</el-col>
         <el-col :span="4">
           <el-select v-model="categorySecondaryId" placeholder="二级分类">
             <el-option-group label="二级分类">
@@ -25,7 +25,6 @@
             </el-option-group>
           </el-select>
         </el-col>
-        </el-row>
       </el-form-item>
       <el-form-item label="order">
         <el-col :span="5">
@@ -70,6 +69,7 @@ export default {
           { required: true, message: '请选择分类', trigger: 'blur' },
         ],
       },
+      editDefaultOpen: null,
       article: {
         articleId: null,
         articleTitle: '',
@@ -111,8 +111,10 @@ export default {
     if (id != null && id != '' && id != undefined) {
       console.log("article id:",id)
       this.article.articleId = id
+      this.editDefaultOpen = "preview"
       this.articleGet()
     } else {
+      this.editDefaultOpen = "edit"
       this.categoryAll()
     }
   },
@@ -238,5 +240,5 @@ export default {
     width: 100%;
     height: 400px;
   }
- 
+
 </style>

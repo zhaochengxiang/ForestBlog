@@ -39,7 +39,7 @@
       </el-aside>
       <el-container>
         <el-main>
-          <el-breadcrumb separator-class="el-icon-arrow-right">
+          <el-breadcrumb separator="/">
             <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
             <el-breadcrumb-item v-text="this.$router.currentRoute.name"></el-breadcrumb-item>
           </el-breadcrumb>
@@ -62,7 +62,17 @@
     methods: {
       handleCommand(command){
         if (command == 'logout') {
-         
+          var _this = this
+          this.$http.post("/user/logout", {
+
+          }).then(res => {
+            if (res.data.code == 200) {
+              window.localStorage.removeItem("token")
+              _this.$router.replace({path: '/'})
+            } 
+          }).catch(err => {
+            console.error(err)
+          })
         }
       }
     },

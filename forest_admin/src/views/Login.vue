@@ -36,7 +36,8 @@ export default {
       }).then(res => {
         _this.loading = false;
         if (res.data.code == 200) {
-            _this.$router.replace({path: '/home'})
+          window.localStorage.setItem("token", res.data.data.token)
+          _this.$router.replace({path: '/home'})
         } else {
             _this.$alert('登录失败!', '失败!')
         }

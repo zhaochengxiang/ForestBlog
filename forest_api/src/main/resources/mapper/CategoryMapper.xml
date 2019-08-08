@@ -46,7 +46,7 @@
         WHERE category_id=#{value}
     </delete>
 
-    <select id="listCategory" resultType="com.zcx.blog.entity.Category">
+    <select id="listCategory" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

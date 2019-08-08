@@ -1,8 +1,9 @@
 package com.zcx.blog.controller;
 
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.ImmutableMap;
 import com.zcx.blog.entity.Article;
+import com.zcx.blog.entity.ArticleParam;
+import com.zcx.blog.entity.Category;
 import com.zcx.blog.entity.Result;
 import com.zcx.blog.enums.ArticleStatus;
 import com.zcx.blog.service.ArticleService;
@@ -12,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/article")
@@ -61,14 +62,18 @@ public class ArticleController {
 
     @RequestMapping(value = "/insert")
     @ResponseBody
-    public String insert(Article article) {
+    public String insert(ArticleParam articleParam) {
+
+        Article article = new Article(articleParam);
         articleService.insertArticle(article);
         return Result.of(200);
     }
 
     @RequestMapping(value = "/update")
     @ResponseBody
-    public String update(Article article) {
+    public String update(ArticleParam articleParam) {
+
+        Article article = new Article(articleParam);
         articleService.updateArticle(article);
         return Result.of(200);
     }

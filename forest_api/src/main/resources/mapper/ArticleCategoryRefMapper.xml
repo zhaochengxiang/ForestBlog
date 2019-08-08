@@ -9,6 +9,19 @@
 
     <sql id="tb">article_category_ref</sql>
 
+    <insert id="insert" parameterType="java.lang.Integer">
+        insert into
+        <include refid="tb"/>
+        (article_id, category_id)
+        values (#{articleId}, #{categoryId})
+    </insert>
+
+    <delete id="deleteByArticleId" parameterType="java.lang.Integer">
+        delete from
+        <include refid="tb"/>
+        where article_id = #{value}
+    </delete>
+
     <select id="listCategoryByArticleId" parameterType="java.lang.Integer"
             resultMap="com.zcx.blog.mapper.CategoryMapper.BaseResultMap">
         SELECT

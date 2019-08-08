@@ -24,4 +24,8 @@ public class Category implements Serializable {
      * 文章数量(非数据库字段)
      */
     private Integer articleCount;
+
+    public Category(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
 }

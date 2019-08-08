@@ -32,6 +32,14 @@
         :total="pageTotal">
       </el-pagination>
     </div>
+
+    <el-dialog title="提示" :visible.sync="dialogVisible" width="20%">
+      <span>您确定要删除这篇文章吗？</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="onDeleteConfirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -42,7 +50,9 @@ export default {
       tableData: [],
       pageIndex: 1,
       pageSize: 10,
-      pageTotal: 0
+      pageTotal: 0,
+      dialogVisible: false,
+      handleIndex: null
     }
   },
   mounted: function () {
@@ -74,17 +84,32 @@ export default {
       })    
     },
     handleEdit(index,row) {
-      console.log("edit index:",index)
-      console.log("edit row:",row)
+      this.$router.push({path: '/articleEdit', query: {id:row.articleId}});
     },
     handleDelete(index,row) {
-      console.log("delete index:",index)
-      console.log("delete row:",row)
+      this.dialogVisible = true
+      this.handleIndex = index
+    },
+    onDeleteConfirm() {
+      this.dialogVisible = false
+      var article = this.tableData[this.handleIndex]
+      var _this = this
+
+      this.$http.post("/article/delete", {
+        id: article.articleId,
+      }).then(res => {
+        if (res.data.code == 200) {
+          _this.tableData.splice(this.handleIndex,1)
+          _this.pageTotal--
+        } 
+      }).catch(err => {
+        console.error(err)
+      }) 
     },
     handleCurrentChange(val) {
       this.pageIndex = val
       this.articleSearch()
-    }
+    },
   }
 }
 </script>

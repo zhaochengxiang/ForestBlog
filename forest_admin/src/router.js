@@ -33,7 +33,7 @@ export default new Router({
           name: '全部文章',
           component: ArticleList,
           meta: {
-            keepAlive: true
+            keepAlive: false
           }
         }, 
         {
@@ -41,7 +41,16 @@ export default new Router({
           name: '发表文章',
           component: ArticlePost,
           meta: {
-            keepAlive: true
+            keepAlive: false
+          }
+        },
+        {
+          path: '/articleEdit',
+          name: '修改文章',
+          component: ArticlePost,
+          hidden: true,
+          meta: {
+            keepAlive: false
           }
         },
         {

@@ -1,8 +1,8 @@
 package com.zcx.blog.controller;
 
-import com.zcx.blog.entity.Category;
 import com.zcx.blog.entity.Result;
-import com.zcx.blog.service.CategoryService;
+import com.zcx.blog.entity.Tag;
+import com.zcx.blog.service.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,44 +11,44 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 @Controller
-@RequestMapping("/category")
-public class CategoryController {
+@RequestMapping("/tag")
+public class TagController {
 
     @Autowired
-    private CategoryService categoryService;
+    private TagService tagService;
 
     @RequestMapping(value = "/insert")
     @ResponseBody
-    public String insert(Category category) {
-        categoryService.insert(category);
+    public String insert(Tag tag) {
+        tagService.insert(tag);
         return Result.of(200);
     }
 
     @RequestMapping(value = "/update")
     @ResponseBody
-    public String update(Category category) {
-        categoryService.update(category);
+    public String update(Tag tag) {
+        tagService.update(tag);
         return Result.of(200);
     }
 
     @RequestMapping(value = "/delete")
     @ResponseBody
     public String delete(Integer id) {
-        categoryService.deleteCategory(id);
+        tagService.deleteById(id);
         return Result.of(200);
     }
 
     @RequestMapping(value = "/getAll")
     @ResponseBody
     public String getAll() {
-        List<Category> categories = categoryService.listCategory();
-        return Result.of(200,categories);
+        List<Tag> tags = tagService.listTag();
+        return Result.of(200,tags);
     }
 
     @RequestMapping(value = "/getAllWithArticleCount")
     @ResponseBody
     public String getAllWithArticleCount() {
-        List<Category> categories = categoryService.listCategoryWithCount();
-        return Result.of(200,categories);
+        List<Tag> tags = tagService.listTagWithCount();
+        return Result.of(200,tags);
     }
 }

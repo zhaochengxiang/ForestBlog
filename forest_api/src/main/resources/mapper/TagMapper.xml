@@ -12,8 +12,33 @@
 
     <sql id="tb">tag</sql>
 
+    <delete id="deleteById" parameterType="java.lang.Integer" >
+        where tag_id = #{tagId,jdbcType=INTEGER}        delete from <include refid="tb"/>
+
+    </delete>
+
+    <insert id="insert" parameterType="com.zcx.blog.entity.Tag" useGeneratedKeys="true" keyProperty="tagId">
+        insert into <include refid="tb"/>
+        (tag_name, tag_description)
+        values (#{tagName,jdbcType=VARCHAR}, #{tagDescription,jdbcType=VARCHAR})
+    </insert>
+
+
+    <update id="update" parameterType="com.zcx.blog.entity.Tag" >
+        update <include refid="tb"/>
+        <set >
+            <if test="tagName != null" >
+                tag_name = #{tagName,jdbcType=VARCHAR},
+            </if>
+            <if test="tagDescription != null" >
+                tag_description = #{tagDescription,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where tag_id = #{tagId,jdbcType=INTEGER}
+    </update>
+
     <!--获得标签列表-->
-    <select id="listTag"  resultType="com.zcx.blog.entity.Tag">
+    <select id="listTag" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM <include refid="tb"/>

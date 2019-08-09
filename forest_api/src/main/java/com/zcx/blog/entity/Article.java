@@ -2,7 +2,6 @@ package com.zcx.blog.entity;
 
 import lombok.Data;
 
-import java.beans.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -65,8 +64,15 @@ public class Article implements Serializable {
         if (articleParam.getArticleChildCategoryId() != null) {
             categoryList.add(new Category(articleParam.getArticleChildCategoryId()));
         }
-
         this.categoryList = categoryList;
+
+        List<Tag> tagList = new ArrayList<>();
+        if (articleParam.getArticleTagIds() != null) {
+            for (int i = 0; i < articleParam.getArticleTagIds().size(); i++) {
+                tagList.add(new Tag(articleParam.getArticleTagIds().get(i)));
+            }
+        }
+        this.tagList = tagList;
     }
 
 }

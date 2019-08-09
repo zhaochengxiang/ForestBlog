@@ -2,12 +2,11 @@ package com.zcx.blog.service;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.zcx.blog.entity.Article;
-import com.zcx.blog.entity.ArticleCategoryRef;
-import com.zcx.blog.entity.Category;
+import com.zcx.blog.entity.*;
 import com.zcx.blog.enums.ArticleCommentStatus;
 import com.zcx.blog.mapper.ArticleCategoryRefMapper;
 import com.zcx.blog.mapper.ArticleMapper;
+import com.zcx.blog.mapper.ArticleTagRefMapper;
 import com.zcx.blog.util.HtmlUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +26,9 @@ public class ArticleService {
 
     @Autowired(required = false)
     private ArticleCategoryRefMapper articleCategoryRefMapper;
+
+    @Autowired(required = false)
+    private ArticleTagRefMapper articleTagRefMapper;
 
     public List<Article> listRecentArticle(Integer limit) {
         return articleMapper.listArticleByLimit(limit);
@@ -61,6 +63,12 @@ public class ArticleService {
         }
         article.setCategoryList(categoryList);
 
+        List<Tag> tagList = articleTagRefMapper.listTagByArticleId(article.getArticleId());
+        if (tagList == null) {
+            tagList = new ArrayList<>();
+        }
+        article.setTagList(tagList);
+
         return article;
     }
 
@@ -87,6 +95,12 @@ public class ArticleService {
                     article.getCategoryList().get(i).getCategoryId());
             articleCategoryRefMapper.insert(articleCategoryRef);
         }
+
+        for (int i = 0; i < article.getTagList().size(); i++) {
+            ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(),
+                    article.getTagList().get(i).getTagId());
+            articleTagRefMapper.insert(articleTagRef);
+        }
     }
 
     public void updateArticle(Article article)  {
@@ -106,6 +120,16 @@ public class ArticleService {
                 ArticleCategoryRef articleCategoryRef = new ArticleCategoryRef(article.getArticleId(),
                         article.getCategoryList().get(i).getCategoryId());
                 articleCategoryRefMapper.insert(articleCategoryRef);
+            }
+        }
+
+        if (article.getTagList() != null) {
+            articleTagRefMapper.deleteByArticleId(article.getArticleId());
+
+            for (int i = 0; i < article.getTagList().size(); i++) {
+                ArticleTagRef articleTagRef = new ArticleTagRef(article.getArticleId(),
+                        article.getTagList().get(i).getTagId());
+                articleTagRefMapper.insert(articleTagRef);
             }
         }
     }

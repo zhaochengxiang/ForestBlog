@@ -3,14 +3,12 @@ package com.zcx.blog.service;
 import com.zcx.blog.entity.Session;
 import com.zcx.blog.entity.User;
 import com.zcx.blog.mapper.UserMapper;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Slf4j
+@Transactional
 public class UserService {
 
     @Autowired(required = false)

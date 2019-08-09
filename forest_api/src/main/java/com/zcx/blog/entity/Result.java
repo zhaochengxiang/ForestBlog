@@ -2,9 +2,6 @@ package com.zcx.blog.entity;
 
 import com.zcx.blog.util.GsonUtils;
 
-/**
- * Created by wayne on 15/11/2016.
- */
 public class Result {
     private int code;
     private String message;

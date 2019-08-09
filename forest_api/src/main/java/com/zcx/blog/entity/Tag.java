@@ -17,4 +17,8 @@ public class Tag implements Serializable {
      * 文章数量(不是数据库字段)
      */
     private Integer articleCount;
+
+    public Tag(Integer tagId) {
+        this.tagId = tagId;
+    }
 }

@@ -9,22 +9,27 @@
       </el-form-item>
       <el-form-item label="分类" prop="category">
         <el-col :span="4">
-          <el-select v-model="categoryPrimaryId" placeholder="一级分类">
+          <el-select v-model="categoryParentId" placeholder="一级分类">
             <el-option-group label="一级分类">
-              <el-option v-for="category in categoryPrimaryList" :key="category.categoryId" :label="category.categoryName" :value="category.categoryId">
+              <el-option v-for="category in categoryParentList" :key="category.categoryId" :label="category.categoryName" :value="category.categoryId">
               </el-option>
             </el-option-group>
           </el-select>
         </el-col>
         <el-col :span="1">-</el-col>
         <el-col :span="4">
-          <el-select v-model="categorySecondaryId" placeholder="二级分类">
+          <el-select v-model="categoryChildId" placeholder="二级分类">
             <el-option-group label="二级分类">
-              <el-option v-for="category in categorySecondaryList" :key="category.categoryId" :label="category.categoryName" :value="category.categoryId">
+              <el-option v-for="category in categoryChildList" :key="category.categoryId" :label="category.categoryName" :value="category.categoryId">
               </el-option>
             </el-option-group>
           </el-select>
         </el-col>
+      </el-form-item>
+      <el-form-item label="标签">
+        <el-checkbox-group v-model="articleTagList">
+          <el-checkbox v-for="tag in tagList" :key="tag.tagId" :label="tag.tagId">{{tag.tagName}}</el-checkbox>
+        </el-checkbox-group>
       </el-form-item>
       <el-form-item label="order">
         <el-col :span="5">
@@ -80,28 +85,29 @@ export default {
         articleStatus: 1,
       },
       categoryList: [],
-      categoryPrimaryList: [],
-      categorySecondaryList: [],
-      prevCategoryPrimaryId: null,
-      categoryPrimaryId: null,
-      prevCategorySecondaryId: null,
-      categorySecondaryId: null,
+      categoryParentList: [],
+      categoryChildList: [],
+      prevCategoryParentId: null,
+      prevCategoryChildId: null,
+      categoryParentId: null,
+      categoryChildId: null,
       tagList: [],
+      articleTagList:[]
     }
   },
   watch: {
-    categoryPrimaryId: function() {
-      if (this.prevCategoryPrimaryId != null && this.categoryPrimaryId == this.prevCategoryPrimaryId) {
-        this.categorySecondaryId = this.prevCategorySecondaryId
+    categoryParentId: function() {
+      if (this.prevCategoryParentId != null && this.categoryParentId == this.prevCategoryParentId) {
+        this.categoryChildId = this.prevCategoryChildId
       } else {
-        this.categorySecondaryId = null
+        this.categoryChildId = null
       }
 
-      this.categorySecondaryList.splice(0,this.categorySecondaryList.length)
+      this.categoryChildList.splice(0,this.categoryChildList.length)
       for (var i = 0; i < this.categoryList.length; i++) {
         var category = this.categoryList[i]
-        if (this.categoryPrimaryId == category.categoryPid) {
-          this.categorySecondaryList.push(category)
+        if (this.categoryParentId == category.categoryPid) {
+          this.categoryChildList.push(category)
         }
       }
     }
@@ -116,6 +122,7 @@ export default {
     } else {
       this.editDefaultOpen = "edit"
       this.categoryAll()
+      this.tagAll()
     }
   },
   methods: {
@@ -127,15 +134,23 @@ export default {
         if (res.data.code == 200) {
           console.log("article get:",res.data.data);
           _this.article = res.data.data
+
           for (var i = 0; i < _this.article.categoryList.length; i++) {
             var category = _this.article.categoryList[i]
             if (category.categoryPid == 0) {
-              _this.categoryPrimaryId = _this.prevCategoryPrimaryId = category.categoryId
+              _this.categoryParentId = _this.prevCategoryParentId = category.categoryId
             } else {
-              _this.categorySecondaryId = _this.prevCategorySecondaryId = category.categoryId
+              _this.categoryChildId = _this.prevCategoryChildId = category.categoryId
             }
           }
+
+          for (var i = 0; i< _this.article.tagList.length; i++) {
+            var tag = _this.article.tagList[i]
+            _this.articleTagList.push(tag.tagId)
+          }
+
           _this.categoryAll()
+          _this.tagAll()
         } 
       }).catch(err => {
         console.error(err)
@@ -153,12 +168,25 @@ export default {
           for (var i = 0; i < _this.categoryList.length; i++) {
             var category = _this.categoryList[i]
             if (category.categoryPid == 0) {
-              _this.categoryPrimaryList.push(category)
+              _this.categoryParentList.push(category)
             }
-            if (_this.categoryPrimaryId == category.categoryPid) {
-              _this.categorySecondaryList.push(category)
+            if (_this.categoryParentId == category.categoryPid) {
+              _this.categoryChildList.push(category)
             }
           }
+        } 
+      }).catch(err => {
+        console.error(err)
+      }) 
+    },
+    tagAll() {
+      var _this = this
+      this.$http.post("/tag/getAll", {
+        
+      }).then(res => {
+        if (res.data.code == 200) {
+          console.log("tag all:",res.data.data)
+          _this.tagList = res.data.data
         } 
       }).catch(err => {
         console.error(err)
@@ -173,21 +201,22 @@ export default {
         this.$message('内容不能为空')
         return
       }
-      if (this.categoryPrimaryId == null) {
+      if (this.categoryParentId == null) {
         this.$message('必须选择一级分类')
         return
       }
 
       if (this.article.articleId == null) {
-      
+
         var params = {
           articleTitle: this.article.articleTitle,
           articleContent: this.article.articleContent,
-          articleParentCategoryId: this.categoryPrimaryId,
-          articleStatus: this.article.articleStatus
+          articleParentCategoryId: this.categoryParentId,
+          articleStatus: this.article.articleStatus,
+          articleTagIds: this.articleTagList
         };
-        if (this.categorySecondaryId) {
-          params.articleChildCategoryId = this.categorySecondaryId
+        if (this.categoryChildId) {
+          params.articleChildCategoryId = this.categoryChildId
         }
         if (this.article.articleOrder) {
           params.articleOrder = this.article.articleOrder
@@ -208,11 +237,12 @@ export default {
           articleId: this.article.articleId,
           articleTitle: this.article.articleTitle,
           articleContent: this.article.articleContent,
-          articleParentCategoryId: this.categoryPrimaryId,
-          articleStatus: this.article.articleStatus
+          articleParentCategoryId: this.categoryParentId,
+          articleStatus: this.article.articleStatus,
+          articleTagIds: this.articleTagList
         };
-        if (this.categorySecondaryId) {
-          params.articleChildCategoryId = this.categorySecondaryId
+        if (this.categoryChildId) {
+          params.articleChildCategoryId = this.categoryChildId
         }
         if (this.article.articleOrder) {
           params.articleOrder = this.article.articleOrder

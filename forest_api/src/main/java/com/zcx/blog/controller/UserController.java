@@ -37,7 +37,7 @@ public class UserController {
         user.setUserLastLoginTime(new Date());
         userService.updateUser(user);
 
-        userService.saveSession(user, 1);
+        userService.saveSession(user, 0);
 
         Session session = sessionService.get();
 

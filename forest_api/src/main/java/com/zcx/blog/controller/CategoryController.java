@@ -48,4 +48,11 @@ public class CategoryController {
         List<Category> categories = categoryService.listCategory();
         return Result.of(200,categories);
     }
+
+    @RequestMapping(value = "/getAllWithArticleCount")
+    @ResponseBody
+    public String getAllWithArticleCount() {
+        List<Category> categories = categoryService.listCategoryWithCount();
+        return Result.of(200,categories);
+    }
 }

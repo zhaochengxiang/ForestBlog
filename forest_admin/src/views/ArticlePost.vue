@@ -5,7 +5,7 @@
         <el-input v-model="article.articleTitle"></el-input>
       </el-form-item>
       <el-form-item label="内容" prop="content">
-        <mavon-editor :subfield = "false" :defaultOpen = "editDefaultOpen" v-model="article.articleContent" class="editor" />
+        <!-- <mavon-editor :subfield = "false" :defaultOpen = "editDefaultOpen" v-model="article.articleContent" class="editor" /> -->
       </el-form-item>
       <el-form-item label="分类" prop="category">
         <el-col :span="4">
@@ -50,9 +50,6 @@
       <el-form-item>
         <el-col :span="2">
           <el-button type="primary" @click="onSave">保存</el-button>
-        </el-col>
-        <el-col :span="2">
-          <el-button @click="onReset">重置</el-button>
         </el-col>
       </el-form-item>
     </el-form>
@@ -258,9 +255,6 @@ export default {
         }) 
       }
     },
-    onReset() {
-
-    }
   }
 }
 </script>

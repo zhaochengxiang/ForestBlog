@@ -16,37 +16,40 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      form: {
-          username: '',
-          password: '',
-      },
-      loading: false
-    }
-  },
-  methods: {
-    onSubmit() {
-      var _this = this
-      this.loading = true
-      this.$http.post("/user/login", {
-        username: this.form.username,
-        password: this.form.password
-      }).then(res => {
-        _this.loading = false;
-        if (res.data.code == 200) {
-          window.localStorage.setItem("token", res.data.data.token)
-          _this.$router.replace({path: '/home'})
-        } else {
-            _this.$alert('登录失败!', '失败!')
-        }
-      }).catch(err => {
-        console.error(err)
-      })
+
+  import { setToken } from '../utils/auth.js'
+
+  export default {
+    data() {
+      return {
+        form: {
+            username: '',
+            password: '',
+        },
+        loading: false
+      }
+    },
+    methods: {
+      onSubmit() {
+        var _this = this
+        this.loading = true
+        this.$http.post("/user/login", {
+          username: this.form.username,
+          password: this.form.password
+        }).then(res => {
+          _this.loading = false;
+          if (res.data.code == 200) {
+            setToken(res.data.data.token)
+            _this.$router.replace({path: '/home'})
+          } else {
+              _this.$alert('登录失败!', '失败!')
+          }
+        }).catch(err => {
+          console.error(err)
+        })
+      }
     }
   }
-}
 </script>
 
 <style>

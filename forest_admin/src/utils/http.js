@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from './auth.js'
 
 // create an axios instance
 const service = axios.create({
@@ -13,8 +14,8 @@ const service = axios.create({
 // request interceptor
 service.interceptors.request.use(
   config => {
-    if (window.localStorage.getItem("token")) {
-      config.headers['Access-Token'] = window.localStorage.getItem("token");
+    if (getToken()) {
+      config.headers['Access-Token'] = getToken()
     } 
 
     let ret = ''

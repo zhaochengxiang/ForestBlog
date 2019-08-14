@@ -1,23 +1,24 @@
 import router from './router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
+import { getToken } from './utils/auth.js'
 
 NProgress.configure({ showSpinner: false })
 
 router.beforeEach((to, from, next) => {
   NProgress.start() 
-  if (window.localStorage.getItem('token')) { 
-    if (to.path === '/') {
-      next({ path: '/home' })
+  if (getToken()) { 
+    if (to.path === '/login') {
+      next({ path: '/' })
       NProgress.done() 
     } else {
       next()
     }
   } else {
-    if (to.path == '/') {
+    if (to.path == '/login') {
       next()
     } else {
-      next('/')
+      next('/login')
       NProgress.done() 
     }
   }

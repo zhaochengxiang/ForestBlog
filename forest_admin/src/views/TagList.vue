@@ -119,9 +119,9 @@ export default {
         this.$message("名称不能为空")
         return
       }
-      
+
+      var _this = this
       if (this.currentTag.tagId == null) {
-        var _this = this
         this.$http.post("/tag/insert", {
           tagName: this.currentTag.tagName,
           tagDescription: this.currentTag.tagDescription,
@@ -143,7 +143,6 @@ export default {
           console.error(err)
         }) 
       } else {
-        var _this = this
         this.$http.post("/tag/update", {
           tagId: this.currentTag.tagId,
           tagName: this.currentTag.tagName,
@@ -171,7 +170,3 @@ export default {
   }
 }
 </script>
-
-<style>
-
-</style>

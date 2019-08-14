@@ -1,16 +1,28 @@
 import Vue from "vue"
 import Router from "vue-router"
-import Login from "./views/Login.vue"
-import Layout from "./views/Layout/Layout.vue"
-import Dashboard from "./views/Dashboard.vue"
-import ArticleList from "./views/ArticleList.vue"
-import ArticlePost from "./views/ArticlePost.vue"
-import CategoryList from "./views/CategoryList.vue"
-import TagList from "./views/TagList.vue"
+import Redirect from "./views/Redirect"
+import Login from "./views/Login"
+import Layout from "./views/Layout/Layout"
+import Dashboard from "./views/Dashboard"
+import ArticleList from "./views/ArticleList"
+import ArticlePost from "./views/ArticlePost"
+import CategoryList from "./views/CategoryList"
+import TagList from "./views/TagList"
 
 Vue.use(Router)
 
 export const constantRouterMap = [
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: Redirect
+      }
+    ]
+  },
   {
     path: "/login",
     hidden: true,

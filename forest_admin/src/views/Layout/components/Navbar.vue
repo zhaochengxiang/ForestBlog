@@ -42,7 +42,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-  import { removeToken } from '@/utils/auth.js'
+import { removeToken } from '@/utils/auth.js'
 
 export default {
   components: {
@@ -70,7 +70,7 @@ export default {
       }).then(res => {
         if (res.data.code == 200) {
           removeToken()
-          _this.$router.replace({path: '/'})
+          _this.$router.replace({path: '/login'})
         } 
       }).catch(err => {
         console.error(err)

@@ -40,7 +40,7 @@
           _this.loading = false;
           if (res.data.code == 200) {
             setToken(res.data.data.token)
-            _this.$router.replace({path: '/home'})
+            _this.$router.replace({path: '/'})
           } else {
               _this.$alert('登录失败!', '失败!')
           }
